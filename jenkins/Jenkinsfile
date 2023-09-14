@@ -11,7 +11,10 @@ node {
         stage('Test'){
              sh 'mvn test'
         }
-        
+        stage('Manual Approval'){
+                sh './jenkins/scripts/deliver.sh'
+                input message: 'Lanjutkan ke tahap Deploy? (Klik "Proceed" untuk Melanjutkan)'
+            }
     }
 
     } catch (Exception e){
@@ -20,8 +23,10 @@ node {
     }finally{
         docker.image('maven:3.9.0').inside('-v /root/.m2:/root/.m2'){
             junit 'target/surefire-reports/*.xml'
-            stage('Deliver'){
-                sh './jenkins/scripts/deliver.sh'
+            stage('Deploy'){
+                echo 'Holding instance for 1 minute.....'
+                sleep(time: 1, unit: 'MINUTES')
+                // sh './jenkins/scripts/deliver.sh'
             }
         }
     }
