@@ -12,7 +12,7 @@ node {
              sh 'mvn test'
         }
         stage('Manual Approval'){
-                sh './jenkins/scripts/deliver.sh'
+                // sh './jenkins/scripts/deliver.sh'
                 input message: 'Lanjutkan ke tahap Deploy? (Klik "Proceed" untuk Melanjutkan)'
             }
     }
@@ -26,7 +26,7 @@ node {
             stage('Deploy'){
                 echo 'Holding instance for 1 minute.....'
                 sleep(time: 1, unit: 'MINUTES')
-                // sh './jenkins/scripts/deliver.sh'
+                sh './jenkins/scripts/deliver.sh'
             }
         }
     }
